@@ -47,3 +47,5 @@ RUN pecl install xdebug && docker-php-ext-enable xdebug
 
 #Instalacion de PHPUnit
 RUN composer global require phpunit/phpunit && ln -s /var/www/html/vendor/bin/phpunit /usr/local/bin/phpunit
+
+RUN a2ensite 000-default.conf

@@ -9,7 +9,7 @@ services:
 
     volumes:
       - ./src:/var/www/html
-      - .docker/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - .docker/apache/000-default.conf:/etc/apache2/sites-available/000-default.conf
       - .docker/php/php.ini:/usr/local/etc/php/php.ini
       - .docker/xdebug/debug.ini:/usr/local/etc/php/conf.d/debug.ini
 

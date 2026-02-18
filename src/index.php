@@ -4,6 +4,7 @@ include_once "vendor/autoload.php";
 
 use Phroute\Phroute\Exception\HttpRouteNotFoundException;
 use Phroute\Phroute\RouteCollector;
+use App\Controlador\HuespedControlador;
 
 
 $router = new RouteCollector();
@@ -13,8 +14,17 @@ $router->get('/',function (){
     include_once "app/View/principal.php";
 });
 
+$router->get('/huespedes',function (){
+    $controlador = new HuespedControlador();
+    return $controlador->listar();
+});
 
-//Resolución de rutas
+$router->get('/huespedes/{id:i}', function ($id){
+    $controlador = new HuespedControlador();
+    return $controlador->show($id);
+});
+
+
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 try {
     $response = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
@@ -22,5 +32,5 @@ try {
 catch(HttpRouteNotFoundException $e){
     return "Ruta no encontrada";
 }
-// Print out the value returned from the dispatched function
+
 echo $response;
