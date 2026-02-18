@@ -13,10 +13,11 @@ class HuespedModelo
 
     public static function fromArray(array $datos): Huesped{
         return new Huesped(
-            $datos['id'] ?? null,
-            $datos['nombre'] ?? "Sin nombre",
-            $datos['dni'] ?? "Sin DNI",
-            $datos['vip'] ?? 0
+            (int)$datos['id'] ?? 0,
+            (string)$datos['nombre'] ?? "Sin nombre",
+            (string)$datos['dni'] ?? "Sin DNI",
+            (string)$datos['email'] ?? "Sin email",
+            (bool)$datos['vip'] ?? false
         );
     }
     public static function obtenerTodos() :array{
@@ -53,5 +54,21 @@ class HuespedModelo
             return $resultado ? self::fromArray($resultado):null;
 
         }
+
+    public static function guardarHuesped(Huesped $h): bool {
+        try {
+            $conexion = new \PDO("mysql:host=mariadb;dbname=hotel_db", "examen", "examen");
+            $sql = "INSERT INTO huespedes (nombre, dni, email, vip) VALUES (:nombre, :dni, :email, :vip)";
+            $stmt = $conexion->prepare($sql);
+            return $stmt->execute([
+                'nombre' => $h->getNombre(),
+                'dni' => $h->getDni(),
+                'email'  => $h->getEmail(),
+                'vip' => $h->isVip() ? 1 : 0
+            ]);
+        } catch (\PDOException $e) {
+            return false;
+        }
+    }
 
 }

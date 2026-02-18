@@ -24,6 +24,11 @@ $router->get('/huespedes/{id:i}', function ($id){
     return $controlador->show($id);
 });
 
+$router->post('/huespedes',function (){
+    $controlador = new HuespedControlador();
+    $controlador->crear();
+});
+
 
 $dispatcher = new Phroute\Phroute\Dispatcher($router->getData());
 try {

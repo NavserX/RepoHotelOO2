@@ -28,4 +28,29 @@ class HuespedControlador
 
     }
 
+    public function crear() {
+        $json = file_get_contents('php://input');
+        $datos = json_decode($json, true);
+
+        if (isset($datos['nombre'], $datos['dni'], $datos['email'])) {
+            $nuevoHuesped = new \App\Class\Huesped(
+                0,
+                $datos['nombre'],
+                $datos['dni'],
+                $datos['email'],
+                (bool)($datos['vip'] ?? false)
+            );
+
+            if (\App\Modelo\HuespedModelo::guardarHuesped($nuevoHuesped)) {
+                header('Content-type: application/json; charset=utf-8');
+                http_response_code(201);
+                echo json_encode(["mensaje" => "Huésped creado con éxito"], JSON_UNESCAPED_UNICODE);
+            } else {
+                echo json_encode(["error" => "Error de base de datos"]);
+            }
+        } else {
+            echo json_encode(["error" => "Datos incompletos"]);
+        }
+    }
+
 }
