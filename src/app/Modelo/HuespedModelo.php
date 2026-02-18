@@ -32,8 +32,8 @@ class HuespedModelo
         $stmt = $conexion->prepare($sql);
         $stmt->execute();
         $resultado = [];
-            while ($fila = $stmt->fetchAll(PDO::FETCH_ASSOC)){
-            $resultado = self::fromArray($fila);
+            while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)){
+            $resultado[] = self::fromArray($fila);
             }
         return $resultado;
 
@@ -41,7 +41,7 @@ class HuespedModelo
 
     public static function buscarHuesped(int $id): ?Huesped{
         try {
-            $conexion = new PDO("mysql:host=mariadb;dbname=examen", "alumno", "alumno");
+            $conexion = new PDO("mysql:host=mariadb;dbname=hotel_db", "examen", "examen");
             $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }catch(PDOException $e){
             echo "error al conectar con la base de datos".$e->getMessage();
